@@ -15,30 +15,54 @@ const Itemlist = () => {
     }
   }, []);
 
+  const toggle = () => {
+    setShow(!show);
+  };
+
+  const deleteItem = (index) => {
+    let tempList = itemList;
+    tempList.splice(index, 1);
+    localStorage.setItem("itemList", JSON.stringify(tempList));
+    setitemList(tempList);
+    window.location.reload();
+  };
+
+  const updateListArray = (obj, index) => {
+    let tempList = itemList;
+    tempList[index] = obj;
+    localStorage.setItem("itemList", JSON.stringify(tempList));
+    setitemList(tempList);
+    window.location.reload();
+  };
+
   const saveItem = (taskObj) => {
     let tempList = itemList;
     tempList.push(taskObj);
     localStorage.setItem("itemList", JSON.stringify(tempList));
-    setitemList(itemList);
+    setitemList(tempList);
     setShow(false);
   };
 
-  const toggle = () => {
-    setShow(!show);
-  };
   return (
     <>
-      <div className="header text-center mt-3">
-        <h3>ToDo List</h3>
-        <button className="btn btn-primary" onClick={() => setShow(true)}>
-          {" "}
-          Create Item{" "}
-        </button>
-      </div>
-      <div className="item-container">
-        {itemList.map((obj) => (
-          <li>{obj.name}</li>
-        ))}
+      <div className="list-container">
+        <div className="header text-center pt-5">
+          <h3>ToDo List</h3>
+          <button className="btn btn-primary" onClick={() => setShow(true)}>
+            {" "}
+            Create Item{" "}
+          </button>
+        </div>
+        <div className="item-container">
+          {itemList.map((obj, ind) => (
+            <Card
+              itemObj={obj}
+              ind={ind}
+              deleteItem={deleteItem}
+              updateListArray={updateListArray}
+            ></Card>
+          ))}
+        </div>
       </div>
       <Createitem show={show} toggle={toggle} saveItem={saveItem}></Createitem>
     </>

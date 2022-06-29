@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 
-const Createitem = ({ show, toggle, saveItem }) => {
+const Edititem = ({ show, toggle, updateItem, itemObj }) => {
   const [itemName, setItemName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -15,19 +15,24 @@ const Createitem = ({ show, toggle, saveItem }) => {
     }
   };
 
-  const handleSave = (e) => {
-    // e.preventDefault();
+  useEffect(() => {
+    setItemName(itemObj.Name);
+    setDescription(itemObj.Description);
+  }, []);
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
     let itemObj = {};
     itemObj["Name"] = itemName;
     itemObj["Description"] = description;
-    saveItem(itemObj);
+    updateItem(itemObj);
   };
 
   return (
     <>
       <Modal show={show} onHide={toggle}>
         <Modal.Header closeButton>
-          <Modal.Title>Create Item</Modal.Title>
+          <Modal.Title>Update Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div class="mb-3">
@@ -58,8 +63,8 @@ const Createitem = ({ show, toggle, saveItem }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleSave}>
-            Create
+          <Button variant="secondary" onClick={handleUpdate}>
+            Update
           </Button>
           <Button variant="primary" onClick={toggle}>
             Cancel
@@ -69,4 +74,4 @@ const Createitem = ({ show, toggle, saveItem }) => {
     </>
   );
 };
-export default Createitem;
+export default Edititem;
