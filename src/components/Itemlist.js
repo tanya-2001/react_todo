@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Createitem from "./Createitem.js";
 import Card from "./Card";
+
+const Itemfunc = createContext();
 
 const Itemlist = () => {
   const [show, setShow] = useState(false);
@@ -45,27 +47,39 @@ const Itemlist = () => {
 
   return (
     <>
-      <div className="list-container">
-        <div className="header text-center pt-5">
-          <h3>ToDo List</h3>
-          <button className="btn btn-primary" onClick={() => setShow(true)}>
-            {" "}
-            Create Item{" "}
-          </button>
+      <Itemfunc.Provider
+        value={{ deleteItem: deleteItem, updateListArray: updateListArray }}
+      >
+        <div className="list-container">
+          <div className="header text-center pt-5">
+            <h3>Record List</h3>
+            <button
+              className="btn btn-primary mt-2"
+              onClick={() => setShow(true)}
+            >
+              {" "}
+              Create Item{" "}
+            </button>
+          </div>
+          <div className="item-container">
+            {itemList.map((obj, ind) => (
+              <Card
+                itemObj={obj}
+                ind={ind}
+                deleteItem={deleteItem}
+                updateListArray={updateListArray}
+              ></Card>
+            ))}
+          </div>
         </div>
-        <div className="item-container">
-          {itemList.map((obj, ind) => (
-            <Card
-              itemObj={obj}
-              ind={ind}
-              deleteItem={deleteItem}
-              updateListArray={updateListArray}
-            ></Card>
-          ))}
-        </div>
-      </div>
-      <Createitem show={show} toggle={toggle} saveItem={saveItem}></Createitem>
+        <Createitem
+          show={show}
+          toggle={toggle}
+          saveItem={saveItem}
+        ></Createitem>
+      </Itemfunc.Provider>
     </>
   );
 };
 export default Itemlist;
+export { Itemfunc };

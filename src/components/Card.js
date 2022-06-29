@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Edititem from "./Edititem.js";
+import { Itemfunc } from "./Itemlist.js";
 
 function randomRgbColor() {
   let r = Math.floor(Math.random() * 256);
@@ -8,7 +9,10 @@ function randomRgbColor() {
   return `rgba(${r},${g},${b},0.2)`;
 }
 
-const Card = ({ itemObj, ind, deleteItem, updateListArray }) => {
+const Card = ({ itemObj, ind }) => {
+  const { deleteItem } = useContext(Itemfunc);
+  const { updateListArray } = useContext(Itemfunc);
+
   const [show, setShow] = useState(false);
 
   const toggle = () => {
@@ -24,7 +28,7 @@ const Card = ({ itemObj, ind, deleteItem, updateListArray }) => {
   };
 
   return (
-    <div class="card-wrapper m-2">
+    <div class="card-wrapper m-3">
       <div class="item-holder">
         <span class="card-header" style={{ backgroundColor: randomRgbColor() }}>
           {itemObj.Name}
